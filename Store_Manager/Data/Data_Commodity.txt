@@ -1,0 +1,4 @@
+001 Rice 30 kg 11000
+002 Candy 60 barrel 50000
+003 CanSa 120 kg 50000
+004 MaiThuy 120 kg 150000
