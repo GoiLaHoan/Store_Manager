@@ -134,6 +134,7 @@ class Edit_Commodity(object):
         for i in range(len(listC)):
             if self.inputID.get() == listC[i][0]:
                 self.listbox.insert(END,listC[i])
+        f.close()
     def onClick(self,event):
         pd = self.listbox.get(ACTIVE)
 
