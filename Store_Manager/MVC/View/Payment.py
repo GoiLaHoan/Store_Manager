@@ -2,45 +2,35 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from datetime import datetime
-
+from MVC.Controller.ReadnWriteF_Commodity import ReadnWriteF
+from MVC.Controller.Commodity_Controller import CommodityController
 
 
 class Payment(object):
     total_cost = 0
-    # listName = []
-    # listQuantily = []
-    # listPrice = []
-    # listID = []
-    def readData(self):
-        self.listName = []
-        self.listQuantily = []
-        self.listPrice = []
-        self.listID = []
-        f = open('./../../Data/Data_Commodity.txt', 'rt', encoding='utf-8')
-        for line in f:
-            list1 = line.split()
-            self.listID.append(list1[0])
-            self.listName.append(list1[1] + ' (' + list1[3] + ')')
-            self.listQuantily.append(list1[2])
-            self.listPrice.append(list1[4])
+
     def __init__(self, master):
 
         self.master = master
 
-        # ===========Tao Title Add Commodity ============
-        self.headingFrame1 = Frame(master, bg="#ff66f5", bd=5)
-        self.headingFrame1.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.1)
+        '''
+        Create Heading Frame Payment
+        '''
+        self.Heading_Frame = Frame(master, bg="#ff66f5", bd=5)
+        self.Heading_Frame.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.1)
 
-        self.headingLabel = Label(self.headingFrame1, text="Bill Commodity", bg='#fff5b5', fg='black',
+        self.Heading_Label = Label(self.Heading_Frame, text="Bill Commodity", bg='#fff5b5', fg='black',
                                   font=('Courier', 15))
-        self.headingLabel.place(relx=0, rely=0, relwidth=1, relheight=1)
+        self.Heading_Label.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-        # ===================product details====================
-        # welcome=Label(master, text='Welcome to my store', font='arial 18 bold', fg='red')
-        # welcome.place(relx=0.58, rely=0.83, relwidth=0.4, relheight=0.155)
+        '''
+        Create Product Details
+        '''
+        #Create Label Frame Product Details
         F1 = LabelFrame(master, text='Product Details', font='arial 18 bold', fg='red', bg='#88effc')
         F1.place(x=5, y=100, width=630, height=490)
 
+        #Create ScrollBar
         my_canvas = Canvas(F1, bg='#88effc')
         my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
 
@@ -53,134 +43,187 @@ class Payment(object):
 
         my_canvas.create_window((0, 0), window=second_frame, anchor='nw')
 
-        itm1 = Label(second_frame, text="Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black', bg='#88effc')
-        itm1.grid(row=0, column=0, padx=20, pady=15)
+        # Create Label Item, Quantily, Price
+        Item_Label = Label(second_frame, text="Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black', bg='#88effc')
+        Item_Label.grid(row=0, column=0, padx=20, pady=15)
 
-        itm2 = Label(second_frame, text="Quantily of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black',
+        Quantily_Label = Label(second_frame, text="Quantily of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black',
                      bg='#88effc')
-        itm2.grid(row=0, column=1, padx=20, pady=15)
+        Quantily_Label.grid(row=0, column=1, padx=20, pady=15)
 
-        itm3 = Label(second_frame, text="Price of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black',
+        Price_Label = Label(second_frame, text="Price of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black',
                      bg='#88effc')
-        itm3.grid(row=0, column=2, padx=20, pady=15)
+        Price_Label.grid(row=0, column=2, padx=20, pady=15)
 
-
-
+        #Create lists in the data
         self.readData()
-        self.my_lbNames, self.my_etQuas, self.my_lbPrices, self.my_etTotals, self.texttotals, self.textQuas = [], [], [], [], [], []
+
+        # Create lists name of data
+        self.ListName_Label, self.ListQuantily_Entry, self.ListPrice_Label, self.ListTotal_Entry = [], [], [], []
+
+        # Create lists textvariable
+        self.textTotals, self.textQuantily = [], []
+
+
         for i in range(len(self.listName)):
+
             self.texttotal = IntVar()
-
             self.textQua = IntVar()
-            self.lbName = Label(second_frame, text=self.listName[i], font='arial 15 bold', bg='#88effc',
-                                fg='#004d99').grid(row=i + 1, column=0, pady=10, padx=10)
-            self.etQua = Entry(second_frame, textvariable=self.textQua)
-            self.etQua.grid(row=i + 1, column=1, pady=10, padx=10)
-            self.lbPrice = Label(second_frame, text='$'+self.listPrice[i], font='arial 15 bold', bg='#88effc').grid(row=i + 1,column=2,pady=10,padx=10)
-            self.my_lbNames.append(self.lbName)
-            self.my_etQuas.append(self.etQua)
-            self.my_lbPrices.append(self.lbPrice)
-            self.my_etTotals.append(self.etQua)
-            self.texttotals.append(self.texttotal)
-            self.textQuas.append(self.textQua)
 
+            self.Name_Label = Label(second_frame, text=self.listName[i], font='arial 15 bold', bg='#88effc', fg='#004d99')
+            self.Name_Label.grid(row=i + 1, column=0, pady=10, padx=10)
 
+            self.Quantily_Entry = Entry(second_frame, textvariable=self.textQua)
+            self.Quantily_Entry.grid(row=i + 1, column=1, pady=10, padx=10)
+
+            self.Price_Label = Label(second_frame, text='$'+self.listPrice[i], font='arial 15 bold', bg='#88effc')
+            self.Price_Label.grid(row=i + 1,column=2,pady=10,padx=10)
+
+            #Add data to the list
+            self.ListName_Label.append(self.Name_Label)
+            self.ListQuantily_Entry.append(self.Quantily_Entry)
+            self.ListPrice_Label.append(self.Price_Label)
+            self.ListTotal_Entry.append(self.Quantily_Entry)
+            self.textTotals.append(self.texttotal)
+            self.textQuantily.append(self.textQua)
+
+        '''
+        Design Bill
+        '''
         F2 = Frame(master, relief=GROOVE, bd=10)
         F2.place(x=640, y=100, width=440, height=607)
+
         now = datetime.now()
-        bill_title = Label(F2, text=f'Store_Python\n\nReceipt              {now.strftime("%d/%m/%Y %H:%M:%S")}', font=('Helvetic', 18, 'bold'), fg='black')
+        bill_title = Label(F2, text=f'Store_Python\n\nReceipt\t\t{now.strftime("%d/%m/%Y %H:%M:%S")}', font=('Helvetic', 16, 'bold'), fg='black')
         bill_title.pack()
+
         scrol = Scrollbar(F2, orient=VERTICAL)
         scrol.pack(side=RIGHT, fill=Y)
+
         self.textarea = Text(F2, font='arial 15 bold', yscrollcommand=scrol.set)
         self.textarea.pack(fill=BOTH)
         scrol.config(command=self.textarea.yview())
 
+        '''
+        Design Button
+        '''
         F3 = Frame(master, relief=GROOVE, bd=10)
         F3.place(x=5, y=600, width=630, height=110)
 
-        bt1 = Button(F3, text='Print Bill', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5,
-                     command=self.printbill)
-        bt1.place(relx=0.01, rely=0.15, relwidth=0.2, relheight=0.7)
+        #Print
+        printBtn = Button(F3, text='Print Bill', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5,command=self.printbill)
+        printBtn.place(relx=0.01, rely=0.15, relwidth=0.2, relheight=0.7)
 
-        bt2 = Button(F3, text='Receipt', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=self.receipt)
-        bt2.place(relx=0.26, rely=0.15, relwidth=0.2, relheight=0.7)
+        #Receipt
+        receiptBtn = Button(F3, text='Receipt', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=self.receipt)
+        receiptBtn.place(relx=0.26, rely=0.15, relwidth=0.2, relheight=0.7)
 
-        bt3 = Button(F3, text='Resert', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5,
-                     command=self.resert)
-        bt3.place(relx=0.53, rely=0.15, relwidth=0.2, relheight=0.7)
+        #Resert
+        resertBtn = Button(F3, text='Resert', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5,command=self.resert)
+        resertBtn.place(relx=0.53, rely=0.15, relwidth=0.2, relheight=0.7)
 
-        bt4 = Button(F3, text='Exit', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=master.destroy)
-        bt4.place(relx=0.79, rely=0.15, relwidth=0.2, relheight=0.7)
+        #Exit
+        exitBtn = Button(F3, text='Exit', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=master.destroy)
+        exitBtn.place(relx=0.79, rely=0.15, relwidth=0.2, relheight=0.7)
 
 
+    def readData(self):
+        self.listName = []
+        self.listQuantily = []
+        self.listPrice = []
+        self.listID = []
+        self.listUnit = []
+        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
+        for line in f:
+            listData = line.split()
+            self.listID.append(listData[0])
+            self.listName.append(listData[1])
+            self.listQuantily.append(listData[2])
+            self.listUnit.append(listData[3])
+            self.listPrice.append(listData[4])
 
+
+    def outputData(self):
+        f = ReadnWriteF.ReadnWrite_File_Sales(self, 'a')
+        now = datetime.now()
+        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
+        for i in range(len(self.listName)):
+            if int(self.ListQuantily_Entry[i].get())>0:
+                line=self.listID[i]+' '+self.listName[i]+' '+self.ListQuantily_Entry[i].get()+' '+self.listUnit[i]+' '+self.listPrice[i]
+                f.write(line+'\n')
+        f.write('-'*30+'\n')
+        f.close()
 
     def printbill(self):
         self.total_cost = 0
+
         flag=True
         for i in range(len(self.listPrice)):
-            if self.my_etQuas[i].get() == '':
-                self.my_etQuas[i].delete(0, END)
-                self.my_etQuas[i].insert(END, 0)
-            if int(self.my_etQuas[i].get()) > int(self.listQuantily[i]):
+            if self.ListQuantily_Entry[i].get() == '':
+                self.ListQuantily_Entry[i].delete(0, END)
+                self.ListQuantily_Entry[i].insert(END, 0)
+            if int(self.ListQuantily_Entry[i].get()) > int(self.listQuantily[i]):
                 flag=False
                 messagebox.showerror("Error", self.listName[i]+' in exceed the number of items, MAX: '+self.listQuantily[i])
-                self.textQuas[i].set(self.listQuantily[i])
+                self.textQuantily[i].set(self.listQuantily[i])
             else:
-                self.my_etTotals[i] = int(self.my_etQuas[i].get()) * int(self.listPrice[i])
-                self.texttotals[i].set(self.my_etTotals[i])
-
-                self.total_cost+=self.my_etTotals[i]
+                self.ListTotal_Entry[i] = int(self.ListQuantily_Entry[i].get()) * int(self.listPrice[i])
+                self.textTotals[i].set(self.ListTotal_Entry[i])
+                self.total_cost+=self.ListTotal_Entry[i]
 
         if flag:
             if self.total_cost != 0:
                 self.textarea.delete(1.0, END)
-                self.textarea.insert(END, '   Items\t\tNumber\t       Price\n\n')
+                self.textarea.insert(END, 'Items\t\tNumber\t       Price\n\n')
 
                 for i in range(len(self.listPrice)):
-                    if int(self.my_etQuas[i].get()) > 0:
-                        self.textarea.insert(END, self.listName[i] + '\t\t     ' + self.my_etQuas[i].get() + '\t       ' +
-                                             self.listPrice[i] + '\n')
+                    if int(self.ListQuantily_Entry[i].get()) > 0:
+                        self.textarea.insert(END, self.listName[i] + '\t\t     ' + self.ListQuantily_Entry[i].get() + '\t       ' + self.listPrice[i] + '\n')
                 self.textarea.insert(END, '--------------------------------------------------------\n')
                 self.textarea.insert(END, f'Total_Cost: \t${self.total_cost}')
             else:
                 messagebox.showerror("Error", 'You need to enter quantity')
 
+
     def resert(self):
         self.textarea.delete(0.0, END)
         for i in range(len(self.listPrice)):
-            self.texttotals[i].set(0)
-            self.textQuas[i].set(0)
+            self.textTotals[i].set(0)
+            self.textQuantily[i].set(0)
         for i in range(len(self.listPrice)):
-            self.my_etQuas[i].delete(0, END)
-            self.my_etQuas[i].insert(END, 0)
+            self.ListQuantily_Entry[i].delete(0, END)
+            self.ListQuantily_Entry[i].insert(END, 0)
 
-            # self.my_etTotals[i].delete(0, END)
-            # self.my_etTotals[i].insert(END, 5)
+            # self.ListTotal_Entry[i].delete(0, END)
+            # self.ListTotal_Entry[i].insert(END, 0)
         self.total_cost = 0
         self.readData()
+
 
     def receipt(self):
         if self.total_cost == 0:
             messagebox.showerror("Error", "You need to click Print Bill")
         else:
             self.updateNum()
-            self.resert
+            self.outputData()
+            self.resert()
             messagebox.showinfo("Done", "Thank you for your purchase\n           See you later")
+
+
     def updateNum(self):
-        with open('./../../Data/Data_Commodity.txt', 'r+', encoding='utf-8') as f:
-            d = f.readlines()
-            listE=[]
-            f.seek(0)
-            for w in d:
-                line = w.split()
-                listE.append(line)
-            for i in range(len(d)):
-                if self.listID[i] == listE[i][0]:
-                    d[i] = d[i].replace(listE[i][2], str(int(listE[i][2])-int(self.my_etQuas[i].get())), 1)
-                f.write(d[i])
-            f.truncate()
+        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
+        d = f.readlines()
+        listE=[]
+        f.seek(0)
+        for w in d:
+            line = w.split()
+            listE.append(line)
+        for i in range(len(d)):
+            if self.listID[i] == listE[i][0]:
+                d[i] = d[i].replace(listE[i][2], str(int(listE[i][2])-int(self.ListQuantily_Entry[i].get())), 1)
+            f.write(d[i])
+        f.truncate()
+        f.close()
 
 
 def main4():
