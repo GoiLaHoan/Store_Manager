@@ -116,6 +116,32 @@ class Edit_Commodity(object):
         self.Commodity = CommodityController(cid, cname, cquantily, cunit, cprice)
         return self.Commodity
 
+    def updateNum(self):
+        self.Commodity = self.creatObject()
+        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
+        d = f.readlines()
+        listE=[]
+        f.seek(0)
+        for w in d:
+            line = w.split()
+            listE.append(line)
+        for i in range(len(d)):
+            if self.Commodity.getCID() == listE[i][0]:
+                d[i] = d[i].replace(listE[i][2], str(int(listE[i][2])+int(self.Commodity.getCQuantily())), 1)
+            f.write(d[i])
+        f.truncate()
+        f.close()
+    def outputData(self):
+        self.Commodity = self.creatObject()
+        f = ReadnWriteF.ReadnWrite_File_Import_Commodity(self, 'a')
+        now = datetime.now()
+        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
+        if int(self.Commodity.getCQuantily())>0:
+            line=self.Commodity.getCID()+' '+self.Commodity.getCName()+' '+self.Commodity.getCQuantily()+' '+self.Commodity.getCUnit()+' '+self.Commodity.getCPrice()
+            f.write(line+'\n')
+        f.write('-'*30+'\n')
+        f.close()
+
     def update(self):
         self.Commodity=self.creatObject()
         if self.checkclickshow:
@@ -170,6 +196,7 @@ class Edit_Commodity(object):
         f.close()
 
 
+
     # Transfers the data into entries
     def onClick(self, event):
         pd = self.listbox.get(ACTIVE)
@@ -218,7 +245,7 @@ class Edit_Commodity(object):
             else:
                 # Add to file
                 Write_File = ReadnWriteF.ReadnWrite_File_Commodity(self, 'a')
-                Write_File.write(self.Commodity.getCID() + " " + self.Commodity.getCName() + " " + self.Commodity.getCPrice() + ' ' + self.Commodity.getCUnit() + ' ' + self.Commodity.getCPrice())
+                Write_File.write(self.Commodity.getCID() + " " + self.Commodity.getCName() + " " + self.Commodity.getCQuantily() + ' ' + self.Commodity.getCUnit() + ' ' + self.Commodity.getCPrice())
                 Write_File.write('\n')
                 Write_File.close()
 
@@ -233,32 +260,7 @@ class Edit_Commodity(object):
         else:
             messagebox.showerror("Error", 'ID, Quantily and Price are number')
 
-    def updateNum(self):
-        self.Commodity = self.creatObject()
-        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
-        d = f.readlines()
-        listE,listID=[],[]
-        f.seek(0)
-        for w in d:
-            line = w.split()
-            listE.append(line)
-            listID.append(line[0])
-        for i in range(len(d)):
-            if listID[i] == listE[i][0]:
-                d[i] = d[i].replace(listE[i][2], str(int(listE[i][2])+int(self.Commodity.getCQuantily())), 1)
-            f.write(d[i])
-        f.truncate()
-        f.close()
-    def outputData(self):
-        self.Commodity = self.creatObject()
-        f = ReadnWriteF.ReadnWrite_File_Import_Commodity(self, 'a')
-        now = datetime.now()
-        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
-        if int(self.Commodity.getCQuantily())>0:
-            line=self.Commodity.getCID()+' '+self.Commodity.getCName()+' '+self.Commodity.getCQuantily()+' '+self.Commodity.getCUnit()+' '+self.Commodity.getCPrice()
-            f.write(line+'\n')
-        f.write('-'*30+'\n')
-        f.close()
+
 
 def main3():
     root = Tk()

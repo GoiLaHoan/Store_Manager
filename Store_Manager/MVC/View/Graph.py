@@ -36,6 +36,8 @@ class Graph_Commodity(object):
                     if self.listIDCom[i] == lineImp[0]:
                         self.sumDataImport[i] = self.sumDataImport[i] + int(lineImp[2])
         fS.close()
+
+        plt.figure(figsize=(10, 7))
         plt.gcf().canvas.set_window_title('window title')
         x=np.arange(len(self.sumDataSale))
         plt.bar(x,self.sumDataImport,width=0.3,color='green',label='Import Commodity')
