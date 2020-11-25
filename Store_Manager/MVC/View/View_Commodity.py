@@ -38,8 +38,9 @@ class View_Commodity(object):
         f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
         tempList = []
         for line in f:
-            line = line.split()
-            tempList.append(line)
+            if len(line) > 0 :
+                line = line.split()
+                tempList.append(line)
 
         # Create Treeview with 6 columns
         self.cols = ('ID', 'Name', 'Quantily', 'Unit', 'Price')
@@ -72,8 +73,9 @@ class View_Commodity(object):
 
 
     def show(self, tempList):
-        for i, (ID, Name, Quantily, Unit, Price) in enumerate(tempList, start=1):
-            self.listBox.insert("", "end", values=(ID, Name, Quantily, Unit, Price))
+        if len(tempList) >0 :
+            for i, (ID, Name, Quantily, Unit, Price) in enumerate(tempList, start=1):
+                self.listBox.insert("", "end", values=(ID, Name, Quantily, Unit, Price))
 
     def search(self):
         f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')

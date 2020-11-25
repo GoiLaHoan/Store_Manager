@@ -141,8 +141,6 @@ class Payment(object):
             self.listQuantily.append(listData[2])
             self.listUnit.append(listData[3])
             self.listPrice.append(listData[4])
-
-
     def outputData(self):
         f = ReadnWriteF.ReadnWrite_File_Sales(self, 'a')
         now = datetime.now()
@@ -194,8 +192,6 @@ class Payment(object):
             self.ListQuantily_Entry[i].delete(0, END)
             self.ListQuantily_Entry[i].insert(END, 0)
 
-            # self.ListTotal_Entry[i].delete(0, END)
-            # self.ListTotal_Entry[i].insert(END, 0)
         self.total_cost = 0
         self.readData()
 

@@ -5,6 +5,10 @@ class ReadnWriteF:
         return ReadnWrite
 
     def ReadnWrite_File_Sales(self, mode):
-        ReadnWrite = open('./../../Data/Data_Sales.txt', mode, encoding='utf-8')
+        ReadnWrite = open('../../Data/Data_Sale_Commodity.txt', mode, encoding='utf-8')
+        return ReadnWrite
+
+    def ReadnWrite_File_Import_Commodity(self, mode):
+        ReadnWrite = open('./../../Data/Data_Import Compodity.txt', mode, encoding='utf-8')
         return ReadnWrite
 
