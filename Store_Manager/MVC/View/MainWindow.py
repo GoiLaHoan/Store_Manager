@@ -2,7 +2,7 @@ from tkinter import *
 from MVC.View.Add_Commodity import main2
 from MVC.View.View_Commodity import main1
 from MVC.View.Payment import main4
-from MVC.View.Edit_Commodity import main3
+from MVC.View.AddnEdit_Commodity import main3
 from MVC.View.Graph import main5
 
 class MainWindow(object):
@@ -43,6 +43,7 @@ def mainwindow():
     root.title("Mini Shop")
     root.iconbitmap('shop.ico')
     root.minsize(width=600, height=600)
+    root.maxsize(width=600, height=600)
     root.geometry("600x600")
     root.configure(bg='#88effc')
     root.mainloop()

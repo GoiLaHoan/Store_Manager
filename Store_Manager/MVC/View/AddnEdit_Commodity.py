@@ -8,6 +8,7 @@ class Edit_Commodity(object):
 
     def __init__(self, master):
         self.master = master
+        self.checkclickshow = False
 
         '''
         Create Heading Edit Commodity
@@ -91,57 +92,68 @@ class Edit_Commodity(object):
         '''
         Design Button
         '''
-        # Edit Button
-        self.UpdateBtn = Button(master, text="UPDATE", fg="Green", command=self.edit)
-        self.UpdateBtn.place(relx=0.50, rely=0.86, relwidth=0.18, relheight=0.08)
+
+
 
         # View Button
-        self.ViewBtn = Button(master, text="VIEW", fg="Green", command=self.show)
-        self.ViewBtn.place(relx=0.28, rely=0.86, relwidth=0.18, relheight=0.08)
+        self.ViewBtn = Button(master, text="SHOW", fg="Orange", command=self.show)
+        self.ViewBtn.place(relx=0.06, rely=0.86, relwidth=0.18, relheight=0.08)
+
+        # Add Button
+        self.AddBtn = Button(master, text="ADD", fg="Blue", command=self.submit)
+        self.AddBtn.place(relx=0.28, rely=0.86, relwidth=0.18, relheight=0.08)
+
+        # Update Button
+        self.UpdateBtn = Button(master, text="UPDATE", fg="Green", command=self.update)
+        self.UpdateBtn.place(relx=0.50, rely=0.86, relwidth=0.18, relheight=0.08)
 
         # Quit Button
         self.QuitBtn = Button(master, text="Quit", fg="Red", command=master.destroy)
         self.QuitBtn.place(relx=0.72, rely=0.86, relwidth=0.18, relheight=0.08)
 
-    def edit(self):
-        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
-        d = f.readlines()
-        listE = []
-        f.seek(0)
+    def update(self):
+        if self.checkclickshow:
+            f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
+            d = f.readlines()
+            listE = []
+            f.seek(0)
 
-        # Create object
-        cid = self.ID_Entry.get()
-        cname = self.Name_Entry.get()
-        cquantily = self.Quantily_Entry.get()
-        cunit = self.Unit_Entry.get()
-        cprice = self.Price_Entry.get()
-        self.Edit_Commodity = CommodityController(cid, cname, cquantily, cunit, cprice)
+            # Create object
+            cid = self.ID_Entry.get()
+            cname = self.Name_Entry.get()
+            cquantily = self.Quantily_Entry.get()
+            cunit = self.Unit_Entry.get()
+            cprice = self.Price_Entry.get()
+            self.Edit_Commodity = CommodityController(cid, cname, cquantily, cunit, cprice)
 
 
-        for w in d:
-            line = w.split()
-            listE.append(line)
-        for i in range(len(d)):
-            if self.SearchID_Entry.get() == listE[i][0]:
-                d[i] = d[i].replace(listE[i][0], self.Edit_Commodity.getCID(), 1)
-                d[i] = d[i].replace(listE[i][1], self.Edit_Commodity.getCName(), 1)
-                d[i] = d[i].replace(listE[i][2], self.Edit_Commodity.getCQuantily(), 1)
-                d[i] = d[i].replace(listE[i][3], self.Edit_Commodity.getCUnit(), 1)
-                d[i] = d[i].replace(listE[i][4], self.Edit_Commodity.getCPrice(), 1)
-            f.write(d[i])
-        f.truncate()
-        f.close()
+            for w in d:
+                line = w.split()
+                listE.append(line)
+            for i in range(len(d)):
+                if self.SearchID_Entry.get() == listE[i][0]:
+                    d[i] = d[i].replace(listE[i][0], self.Edit_Commodity.getCID(), 1)
+                    d[i] = d[i].replace(listE[i][1], self.Edit_Commodity.getCName(), 1)
+                    d[i] = d[i].replace(listE[i][2], self.Edit_Commodity.getCQuantily(), 1)
+                    d[i] = d[i].replace(listE[i][3], self.Edit_Commodity.getCUnit(), 1)
+                    d[i] = d[i].replace(listE[i][4], self.Edit_Commodity.getCPrice(), 1)
+                f.write(d[i])
+            f.truncate()
+            f.close()
 
-        # Delete all the entry content
-        self.ID_Entry.delete(0, 'end')
-        self.Name_Entry.delete(0, 'end')
-        self.Quantily_Entry.delete(0, 'end')
-        self.Price_Entry.delete(0, 'end')
-        self.SearchID_Entry.delete(0, 'end')
-        self.listbox.delete(0, 'end')
-        self.Unit_Entry.delete(0, 'end')
+            # Delete all the entry content
+            self.ID_Entry.delete(0, 'end')
+            self.Name_Entry.delete(0, 'end')
+            self.Quantily_Entry.delete(0, 'end')
+            self.Price_Entry.delete(0, 'end')
+            self.SearchID_Entry.delete(0, 'end')
+            self.listbox.delete(0, 'end')
+            self.Unit_Entry.delete(0, 'end')
 
-        messagebox.showinfo("Done", "You have successfully updated")
+            messagebox.showinfo("Done", "You have successfully updated")
+            self.checkclickshow = False
+        else:
+            messagebox.showerror('Error', 'You need to click on ''SHOW'' first')
 
 
     def show(self):
@@ -151,10 +163,15 @@ class Edit_Commodity(object):
         for line in f:
             line = line.split()
             listC.append(line)
+        flag = False
         for i in range(len(listC)):
             if self.SearchID_Entry.get() == listC[i][0]:
                 self.listbox.insert(END, listC[i])
+                flag=True
+        if flag == False:
+            messagebox.showinfo('dsdsd', 'ID chưa có, bạn muốn thêm vào cửa hàng không?')
         f.close()
+
 
     # Transfers the data into entries
     def onClick(self, event):
@@ -175,6 +192,52 @@ class Edit_Commodity(object):
         self.Price_Entry.delete(0, END)
         self.Price_Entry.insert(END, pd[4])
 
+        self.checkclickshow = True
+
+
+# Check the ID is the same or not?
+    def checkID(self, CID):
+        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
+        for line in f:
+            line = line.split()
+            if CID == line[0]:
+                return False
+        return True
+
+    #Function Submit
+    def submit(self):
+
+        # Create object
+        cid = self.ID_Entry.get()
+        cname = self.Name_Entry.get()
+        cquantily = self.Quantily_Entry.get()
+        cunit = self.Unit_Entry.get()
+        cprice = self.Price_Entry.get()
+        self.Add_Commodity = CommodityController(cid, cname, cquantily, cunit, cprice)
+
+        if cid.isdigit() and cquantily.isdigit() and cprice.isdigit():
+            if len(self.Add_Commodity.getCID()) < 3:
+                messagebox.showerror('Error', 'ID must have 3 or more numbers')
+            elif self.Add_Commodity.getCName() == '' or self.Add_Commodity.getCUnit() == '':
+                messagebox.showerror('Error', 'Please enter the full information')
+            elif self.checkID(self.Add_Commodity.getCID()) == False:
+                messagebox.showerror('Error', 'This ID is available')
+            else:
+                # Add to file
+                Write_File = ReadnWriteF.ReadnWrite_File_Commodity(self, 'a')
+                Write_File.write(cid + " " + cname + " " + cquantily + ' ' + cunit + ' ' + cprice)
+                Write_File.write('\n')
+                Write_File.close()
+
+                # Delete all the entry content
+                self.SearchID_Entry.delete(0, 'end')
+                self.ID_Entry.delete(0, 'end')
+                self.Name_Entry.delete(0, 'end')
+                self.Quantily_Entry.delete(0, 'end')
+                self.Price_Entry.delete(0, 'end')
+                self.Unit_Entry.delete(0, 'end')
+        else:
+            messagebox.showerror("Error", 'ID, Quantily and Price are number')
 
 def main3():
     root = Tk()
