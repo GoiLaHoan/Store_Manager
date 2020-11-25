@@ -1,5 +1,5 @@
-001 Rice 0 kg 12345
-002 Candy 0 barrel 10000
-003 KeoMut3 0 kg 70000
-004 Milk 38 barrel 75123
-005 BuoiThaiHieu 37 kg 50
+001 Rice 40 kg 12345
+002 Candy 25 barrel 10000
+003 KeoMut3 40 kg 70000
+004 Milk 28 barrel 75123
+005 BuoiThaiHieu 21 kg 50
