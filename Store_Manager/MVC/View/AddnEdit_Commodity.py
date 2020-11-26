@@ -158,6 +158,7 @@ class Edit_Commodity(object):
                 if self.SearchID_Entry.get() == listE[i][0]:
                     d[i] = d[i].replace(listE[i][0], self.Commodity.getCID(), 1)
                     d[i] = d[i].replace(listE[i][1], self.Commodity.getCName(), 1)
+
                     d[i] = d[i].replace(listE[i][3], self.Commodity.getCUnit(), 1)
                     d[i] = d[i].replace(listE[i][4], self.Commodity.getCPrice(), 1)
                 f.write(d[i])
@@ -180,20 +181,34 @@ class Edit_Commodity(object):
 
 
     def show(self):
-        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
-        listC = []
-        self.listbox.delete(0, END)
-        for line in f:
-            line = line.split()
-            listC.append(line)
-        flag = False
-        for i in range(len(listC)):
-            if self.SearchID_Entry.get() == listC[i][0]:
-                self.listbox.insert(END, listC[i])
-                flag=True
-        if flag == False:
-            messagebox.showinfo('dsdsd', 'ID chưa có, bạn muốn thêm vào cửa hàng không?')
-        f.close()
+        if self.SearchID_Entry.get() == '':
+            messagebox.showerror('Error', 'You need to enter ID')
+        else:
+            f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
+            listC = []
+            self.listbox.delete(0, END)
+            for line in f:
+                line = line.split()
+                listC.append(line)
+            flag = False
+            for i in range(len(listC)):
+                if self.SearchID_Entry.get() == listC[i][0]:
+                    self.listbox.insert(END, listC[i])
+                    flag=True
+            if flag == False:
+                notishow = messagebox.askyesno('oops', 'this ID not available , would you like to add it to the store?')
+                if notishow > 0:
+                    # Delete all the entry content
+                    self.ID_Entry.delete(0, 'end')
+                    self.Name_Entry.delete(0, 'end')
+                    self.Quantily_Entry.delete(0, 'end')
+                    self.Price_Entry.delete(0, 'end')
+                    self.SearchID_Entry.delete(0, 'end')
+                    self.listbox.delete(0, 'end')
+                    self.Unit_Entry.delete(0, 'end')
+
+                    self.cid.set(self.SearchID_Entry.get())
+            f.close()
 
 
 
@@ -238,9 +253,19 @@ class Edit_Commodity(object):
             elif self.Commodity.getCName() == '' or self.Commodity.getCUnit() == '':
                 messagebox.showerror('Error', 'Please enter the full information')
             elif self.checkID(self.Commodity.getCID()) == False:
-                messagebox.showerror('Error', 'This ID is available')
-                self.outputData()
-                self.updateNum()
+                notisubmit = messagebox.askyesno('oops', 'This ID is available, would you like to add product quantity?')
+                if notisubmit == 0:
+                    # Delete all the entry content
+                    self.ID_Entry.delete(0, 'end')
+                    self.Name_Entry.delete(0, 'end')
+                    self.Quantily_Entry.delete(0, 'end')
+                    self.Price_Entry.delete(0, 'end')
+                    self.SearchID_Entry.delete(0, 'end')
+                    self.listbox.delete(0, 'end')
+                    self.Unit_Entry.delete(0, 'end')
+                else:
+                    self.outputData()
+                    self.updateNum()
 
             else:
                 # Add to file
