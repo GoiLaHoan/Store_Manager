@@ -216,8 +216,8 @@ class Payment(object):
             listE.append(line)
         for i in range(len(d)):
             if self.listID[i] == listE[i][0]:
-                d[i] = d[i].replace(listE[i][2], str(int(listE[i][2])-int(self.ListQuantily_Entry[i].get())), 1)
-            f.write(d[i])
+                listE[i][2] = str(listE[i][2]).replace(listE[i][2],str(int(listE[i][2])-int(self.ListQuantily_Entry[i].get())))
+            f.write(str(listE[i]).strip('[]').replace(',', '').replace('\'', '') + '\n')
         f.truncate()
         f.close()
 

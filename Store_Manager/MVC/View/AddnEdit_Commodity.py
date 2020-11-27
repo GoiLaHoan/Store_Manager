@@ -127,8 +127,8 @@ class Edit_Commodity(object):
             listE.append(line)
         for i in range(len(d)):
             if self.Commodity.getCID() == listE[i][0]:
-                d[i] = d[i].replace(listE[i][2], str(int(listE[i][2])+int(self.Commodity.getCQuantily())), 1)
-            f.write(d[i])
+                listE[i][2] = str(listE[i][2]).replace(listE[i][2], str(int(listE[i][2])+int(self.Commodity.getCQuantily())))
+            f.write(str(listE[i]).strip('[]').replace(',','').replace('\'','')+'\n')
         f.truncate()
         f.close()
     def outputData(self):
@@ -150,18 +150,16 @@ class Edit_Commodity(object):
             listE = []
             f.seek(0)
             self.creatObject()
-
             for w in d:
                 line = w.split()
                 listE.append(line)
             for i in range(len(d)):
                 if self.SearchID_Entry.get() == listE[i][0]:
-                    d[i] = d[i].replace(listE[i][0], self.Commodity.getCID(), 1)
-                    d[i] = d[i].replace(listE[i][1], self.Commodity.getCName(), 1)
-
-                    d[i] = d[i].replace(listE[i][3], self.Commodity.getCUnit(), 1)
-                    d[i] = d[i].replace(listE[i][4], self.Commodity.getCPrice(), 1)
-                f.write(d[i])
+                    listE[i][0] = str(listE[i][0]).replace(listE[i][0], self.Commodity.getCID())
+                    listE[i][1] = str(listE[i][1]).replace(listE[i][1], self.Commodity.getCName())
+                    listE[i][3] = str(listE[i][3]).replace(listE[i][3], self.Commodity.getCUnit())
+                    listE[i][4] = str(listE[i][4]).replace(listE[i][4], self.Commodity.getCPrice())
+                f.write(str(listE[i]).strip('[]').replace(',', '').replace('\'', '') + '\n')
             f.truncate()
             f.close()
 

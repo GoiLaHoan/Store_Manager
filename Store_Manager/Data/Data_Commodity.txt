@@ -1,9 +1,6 @@
-001 Candy 190 barrel 60000
-002 Rice 48 kg 10000
-003 MaiThuy 94 kg 1000000
-004 Milk 86 barrel 90000
-005 TomHum 25 kg 500000
-006 GaRan 45 barrel 200000
-007 Van 80 barrel 123456
-008 Nhuc 99 kg 32000
-009 hahaha 193 barrel 12000
+001 Rice 2 kg 100000
+002 Candy 385 barrel 10000
+003 KeoMut3 400 kg 70000
+004 Milk 388 barrel 75123
+005 BuoiThaiHieu 381 kg 50012
+012 leo11 340 kg 1111111
