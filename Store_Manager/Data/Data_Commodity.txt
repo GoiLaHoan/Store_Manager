@@ -1,6 +1,10 @@
-001 Rice 2 kg 100000
-002 Candy 385 barrel 10000
-003 KeoMut3 400 kg 70000
-004 Milk 388 barrel 75123
-005 BuoiThaiHieu 381 kg 50012
-012 leo11 340 kg 1111111
+001 Milk 50 barrel 75000
+002 Rice 50 kg 10000
+003 Candy 20 barrel 25000
+004 A-Little-Lofi 5 kg 1
+005 Mr.Siro 20 kg 12500
+006 Hoan 5 barrel 10000
+007 Huy 4 kg 12000
+008 Hieu 20 barrel 81000
+009 NoThing 20 kg 65000
+010 BaBon 17 barrel 34000

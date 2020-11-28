@@ -19,8 +19,7 @@ class Payment(object):
         self.Heading_Frame = Frame(master, bg="#ff66f5", bd=5)
         self.Heading_Frame.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.1)
 
-        self.Heading_Label = Label(self.Heading_Frame, text="Bill Commodity", bg='#fff5b5', fg='black',
-                                  font=('Courier', 15))
+        self.Heading_Label = Label(self.Heading_Frame, text="Bill Commodity", bg='#fff5b5', fg='black', font=('Courier', 15))
         self.Heading_Label.place(relx=0, rely=0, relwidth=1, relheight=1)
 
         '''
@@ -47,12 +46,10 @@ class Payment(object):
         Item_Label = Label(second_frame, text="Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black', bg='#88effc')
         Item_Label.grid(row=0, column=0, padx=20, pady=15)
 
-        Quantily_Label = Label(second_frame, text="Quantily of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black',
-                     bg='#88effc')
+        Quantily_Label = Label(second_frame, text="Quantily of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black', bg='#88effc')
         Quantily_Label.grid(row=0, column=1, padx=20, pady=15)
 
-        Price_Label = Label(second_frame, text="Price of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black',
-                     bg='#88effc')
+        Price_Label = Label(second_frame, text="Price of Items", font=('Helvetic', 18, 'bold', 'underline'), fg='black', bg='#88effc')
         Price_Label.grid(row=0, column=2, padx=20, pady=15)
 
         #Create lists in the data
@@ -126,7 +123,7 @@ class Payment(object):
         exitBtn = Button(F3, text='Exit', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=master.destroy)
         exitBtn.place(relx=0.79, rely=0.15, relwidth=0.2, relheight=0.7)
 
-
+    #Put the data in the array
     def readData(self):
         self.listName = []
         self.listQuantily = []
@@ -141,21 +138,15 @@ class Payment(object):
             self.listQuantily.append(listData[2])
             self.listUnit.append(listData[3])
             self.listPrice.append(listData[4])
-    def outputData(self):
-        f = ReadnWriteF.ReadnWrite_File_Sales(self, 'a')
-        now = datetime.now()
-        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
-        for i in range(len(self.listName)):
-            if int(self.ListQuantily_Entry[i].get())>0:
-                line=self.listID[i]+' '+self.listName[i]+' '+self.ListQuantily_Entry[i].get()+' '+self.listUnit[i]+' '+self.listPrice[i]
-                f.write(line+'\n')
-        f.write('-'*30+'\n')
-        f.close()
 
+
+    '''
+    Function Print Bill
+    '''
     def printbill(self):
         self.total_cost = 0
-
         flag=True
+
         for i in range(len(self.listPrice)):
             if self.ListQuantily_Entry[i].get() == '':
                 self.ListQuantily_Entry[i].delete(0, END)
@@ -182,31 +173,12 @@ class Payment(object):
             else:
                 messagebox.showerror("Error", 'You need to enter quantity')
 
+    '''
+    Function Receipt
+    '''
 
-    def resert(self):
-        self.textarea.delete(0.0, END)
-        for i in range(len(self.listPrice)):
-            self.textTotals[i].set(0)
-            self.textQuantily[i].set(0)
-        for i in range(len(self.listPrice)):
-            self.ListQuantily_Entry[i].delete(0, END)
-            self.ListQuantily_Entry[i].insert(END, 0)
-
-        self.total_cost = 0
-        self.readData()
-
-
-    def receipt(self):
-        if self.total_cost == 0:
-            messagebox.showerror("Error", "You need to click Print Bill")
-        else:
-            self.updateNum()
-            self.outputData()
-            self.resert()
-            messagebox.showinfo("Done", "Thank you for your purchase\n           See you later")
-
-
-    def updateNum(self):
+    #Update Quantily in file Data_Commodity
+    def updateQuantily(self):
         f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
         d = f.readlines()
         listE=[]
@@ -221,6 +193,42 @@ class Payment(object):
         f.truncate()
         f.close()
 
+    #Push data into Export_Commodity file
+    def exportData(self):
+        f = ReadnWriteF.ReadnWrite_File_Export_Commodity(self, 'a')
+        now = datetime.now()
+        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
+        for i in range(len(self.listName)):
+            if int(self.ListQuantily_Entry[i].get())>0:
+                line=self.listID[i]+' '+self.listName[i]+' '+self.ListQuantily_Entry[i].get()+' '+self.listUnit[i]+' '+self.listPrice[i]
+                f.write(line+'\n')
+        f.write('-'*30+'\n')
+        f.close()
+
+    #Function Receipt
+    def receipt(self):
+        if self.total_cost == 0:
+            messagebox.showerror("Error", "You need to click Print Bill")
+        else:
+            self.updateQuantily()
+            self.exportData()
+            self.resert()
+            messagebox.showinfo("Done", "Thank you for your purchase\n           See you later")
+
+    '''
+    Function Resert
+    '''
+    def resert(self):
+        self.textarea.delete(0.0, END)
+        for i in range(len(self.listPrice)):
+            self.textTotals[i].set(0)
+            self.textQuantily[i].set(0)
+        for i in range(len(self.listPrice)):
+            self.ListQuantily_Entry[i].delete(0, END)
+            self.ListQuantily_Entry[i].insert(END, 0)
+
+        self.total_cost = 0
+        self.readData()
 
 def main4():
     root = Tk()

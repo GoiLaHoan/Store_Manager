@@ -20,15 +20,19 @@ class MainWindow(object):
         '''
         Design Button
         '''
+        #Button View
         self.btnView = Button(master, text="View All_Commodity", bg='#99CCFF', fg='#004d99', command=main1)
         self.btnView.place(relx=0.275, rely=0.4, relwidth=0.45, relheight=0.1)
 
+        #Button Add/Edit
         self.btnEdit = Button(master, text="Add/Edit Commodity", bg='#99ccff', fg='#004d99', command=main3)
         self.btnEdit.place(relx=0.275, rely=0.5, relwidth=0.45, relheight=0.1)
 
+        #Button Payment
         self.btnPayment = Button(master, text="Payment", bg='#99ccff', fg='#004d99', command=main4)
         self.btnPayment.place(relx=0.275, rely=0.6, relwidth=0.45, relheight=0.1)
 
+        #Button Graph
         self.btnGraph = Button(master, text="Graph", bg='#99ccff', fg='#004d99', command=main5)
         self.btnGraph.place(relx=0.275, rely=0.7, relwidth=0.45, relheight=0.1)
 

@@ -10,18 +10,19 @@ class Edit_Commodity(object):
     def __init__(self, master):
         self.master = master
         self.checkclickshow = False
+
         '''
-        Create Heading Edit Commodity
+        Create Heading Add/Edit Commodity
         '''
         self.Heading_Edit = Frame(master, bg="#ff66f5", bd=5)
         self.Heading_Edit.place(relx=0.2, rely=0.05, relwidth=0.6, relheight=0.18)
 
-        self.headingLb = Label(self.Heading_Edit, text="Edit Commodity", bg='#fff5b5', fg='black',
+        self.headingLb = Label(self.Heading_Edit, text="Add/Edit Commodity", bg='#fff5b5', fg='black',
                                font=('Courier', 15))
         self.headingLb.place(relx=0, rely=0, relwidth=1, relheight=1)
 
         '''
-            Create Frame Search ID
+        Create Frame Search ID
         '''
         self.SearchID_Frame = Frame(master, bg='#6b81ff')
         self.SearchID_Frame.place(relx=0.1, rely=0.25, relwidth=0.8, relheight=0.05)
@@ -33,7 +34,7 @@ class Edit_Commodity(object):
         self.SearchID_Entry.place(relx=0.2, rely=0.2, relwidth=0.72)
 
         '''
-            Create Listbox Data
+        Create Listbox Data
         '''
         self.listbox = Listbox(master, width=55, height=1, font=('arial', 12, 'bold'))
         self.listbox.place(relx=0.1, rely=0.32, relwidth=0.8, relheight=0.05)
@@ -47,7 +48,7 @@ class Edit_Commodity(object):
         self.price = DoubleVar()
         # ======================================
         '''
-            Design FrameEdit
+        Design FrameEdit
         '''
         self.labelFrame = Frame(master, bg='#6b81ff')
         self.labelFrame.place(relx=0.1, rely=0.4, relwidth=0.8, relheight=0.4)
@@ -87,6 +88,7 @@ class Edit_Commodity(object):
 
         self.Price_Entry = Entry(self.labelFrame, textvariable=self.price)
         self.Price_Entry.place(relx=0.2, rely=0.8, relwidth=0.72, relheight=0.1)
+
         '''
         Design Button
         '''
@@ -95,7 +97,7 @@ class Edit_Commodity(object):
         self.ShowBtn.place(relx=0.06, rely=0.86, relwidth=0.18, relheight=0.08)
 
         # Add Button
-        self.AddBtn = Button(master, text="ADD", fg="Blue", command=self.submit)
+        self.AddBtn = Button(master, text="ADD", fg="Blue", command=self.add)
         self.AddBtn.place(relx=0.28, rely=0.86, relwidth=0.18, relheight=0.08)
 
         # Update Button
@@ -106,111 +108,10 @@ class Edit_Commodity(object):
         self.QuitBtn = Button(master, text="Quit", fg="Red", command=master.destroy)
         self.QuitBtn.place(relx=0.72, rely=0.86, relwidth=0.18, relheight=0.08)
 
-    def creatObject(self):
-        # Create object
-        cid = self.ID_Entry.get()
-        cname = self.Name_Entry.get()
-        cquantily = self.Quantily_Entry.get()
-        cunit = self.Unit_Entry.get()
-        cprice = self.Price_Entry.get()
-        self.Commodity = CommodityController(cid, cname, cquantily, cunit, cprice)
-        return self.Commodity
-
-    def updateNum(self):
-        self.Commodity = self.creatObject()
-        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
-        d = f.readlines()
-        listE=[]
-        f.seek(0)
-        for w in d:
-            line = w.split()
-            listE.append(line)
-        for i in range(len(d)):
-            if self.Commodity.getCID() == listE[i][0]:
-                listE[i][2] = str(listE[i][2]).replace(listE[i][2], str(int(listE[i][2])+int(self.Commodity.getCQuantily())))
-            f.write(str(listE[i]).strip('[]').replace(',','').replace('\'','')+'\n')
-        f.truncate()
-        f.close()
-    def outputData(self):
-        self.Commodity = self.creatObject()
-        f = ReadnWriteF.ReadnWrite_File_Import_Commodity(self, 'a')
-        now = datetime.now()
-        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
-        if int(self.Commodity.getCQuantily())>0:
-            line=self.Commodity.getCID()+' '+self.Commodity.getCName()+' '+self.Commodity.getCQuantily()+' '+self.Commodity.getCUnit()+' '+self.Commodity.getCPrice()
-            f.write(line+'\n')
-        f.write('-'*30+'\n')
-        f.close()
-
-    def update(self):
-        self.Commodity=self.creatObject()
-        if self.checkclickshow:
-            f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
-            d = f.readlines()
-            listE = []
-            f.seek(0)
-            self.creatObject()
-            for w in d:
-                line = w.split()
-                listE.append(line)
-            for i in range(len(d)):
-                if self.SearchID_Entry.get() == listE[i][0]:
-                    listE[i][0] = str(listE[i][0]).replace(listE[i][0], self.Commodity.getCID())
-                    listE[i][1] = str(listE[i][1]).replace(listE[i][1], self.Commodity.getCName())
-                    listE[i][3] = str(listE[i][3]).replace(listE[i][3], self.Commodity.getCUnit())
-                    listE[i][4] = str(listE[i][4]).replace(listE[i][4], self.Commodity.getCPrice())
-                f.write(str(listE[i]).strip('[]').replace(',', '').replace('\'', '') + '\n')
-            f.truncate()
-            f.close()
-
-            # Delete all the entry content
-            self.ID_Entry.delete(0, 'end')
-            self.Name_Entry.delete(0, 'end')
-            self.Quantily_Entry.delete(0, 'end')
-            self.Price_Entry.delete(0, 'end')
-            self.SearchID_Entry.delete(0, 'end')
-            self.listbox.delete(0, 'end')
-            self.Unit_Entry.delete(0, 'end')
-
-            messagebox.showinfo("Done", "You have successfully updated")
-            self.checkclickshow = False
-        else:
-            messagebox.showerror('Error', 'You need to click on ''SHOW'' first')
-
-
-    def show(self):
-        if self.SearchID_Entry.get() == '':
-            messagebox.showerror('Error', 'You need to enter ID')
-        else:
-            f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
-            listC = []
-            self.listbox.delete(0, END)
-            for line in f:
-                line = line.split()
-                listC.append(line)
-            flag = False
-            for i in range(len(listC)):
-                if self.SearchID_Entry.get() == listC[i][0]:
-                    self.listbox.insert(END, listC[i])
-                    flag=True
-            if flag == False:
-                notishow = messagebox.askyesno('oops', 'this ID not available , would you like to add it to the store?')
-                if notishow > 0:
-                    # Delete all the entry content
-                    self.ID_Entry.delete(0, 'end')
-                    self.Name_Entry.delete(0, 'end')
-                    self.Quantily_Entry.delete(0, 'end')
-                    self.Price_Entry.delete(0, 'end')
-                    self.SearchID_Entry.delete(0, 'end')
-                    self.listbox.delete(0, 'end')
-                    self.Unit_Entry.delete(0, 'end')
-
-                    self.cid.set(self.SearchID_Entry.get())
-            f.close()
-
-
-
-    # Transfers the data into entries
+    '''
+    =======================================================
+    '''
+    # Push the data into entries
     def onClick(self, event):
         pd = self.listbox.get(ACTIVE)
 
@@ -231,8 +132,128 @@ class Edit_Commodity(object):
 
         self.checkclickshow = True
 
+    # Create object for Commodity
+    def creatObject(self):
+        cid = self.ID_Entry.get()
+        cname = self.Name_Entry.get()
+        cquantily = self.Quantily_Entry.get()
+        cunit = self.Unit_Entry.get()
+        cprice = self.Price_Entry.get()
+        self.Commodity = CommodityController(cid, cname, cquantily, cunit, cprice)
+        return self.Commodity
 
-# Check the ID is the same or not?
+    def resertContent(self):
+        # Delete all the entry content
+        self.ID_Entry.delete(0, 'end')
+        self.Name_Entry.delete(0, 'end')
+        self.Quantily_Entry.delete(0, 'end')
+        self.Price_Entry.delete(0, 'end')
+        self.SearchID_Entry.delete(0, 'end')
+        self.listbox.delete(0, 'end')
+        self.Unit_Entry.delete(0, 'end')
+    '''
+    =======================================================
+    '''
+
+
+    '''
+    Function UPDATE
+    '''
+    # Update item data again (quantity can't update)
+    def update(self):
+        self.Commodity=self.creatObject()
+
+        if self.checkclickshow:
+            f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
+            d = f.readlines()
+            f.seek(0)
+            listE = []
+            self.creatObject()
+
+            for w in d:
+                line = w.split()
+                listE.append(line)
+
+            for i in range(len(d)):
+                if self.SearchID_Entry.get() == listE[i][0]:
+                    listE[i][0] = str(listE[i][0]).replace(listE[i][0], self.Commodity.getCID())
+                    listE[i][1] = str(listE[i][1]).replace(listE[i][1], self.Commodity.getCName())
+                    listE[i][3] = str(listE[i][3]).replace(listE[i][3], self.Commodity.getCUnit())
+                    listE[i][4] = str(listE[i][4]).replace(listE[i][4], self.Commodity.getCPrice())
+
+                f.write(str(listE[i]).strip('[]').replace(',', '').replace('\'', '') + '\n')
+
+            f.truncate()
+            f.close()
+
+            # Delete all the entry content
+            self.resertContent()
+
+            messagebox.showinfo("Done", "You have successfully updated")
+            self.checkclickshow = False
+        else:
+            messagebox.showerror('Error', 'You need to click on ''SHOW'' first')
+
+
+    '''
+    Function SHOW
+    '''
+    def show(self):
+        if self.SearchID_Entry.get() == '':
+            messagebox.showerror('Error', 'You need to enter ID')
+        else:
+            f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
+            listC = []
+            self.listbox.delete(0, END)
+            for line in f:
+                line = line.split()
+                listC.append(line)
+            flag = False
+            for i in range(len(listC)):
+                if self.SearchID_Entry.get() == listC[i][0]:
+                    self.listbox.insert(END, listC[i])
+                    flag=True
+            if flag == False:
+                messagebox.showinfo('oops', 'this ID not available , would you like to add it to the store?')
+
+                # Delete all the entry content
+                self.resertContent()
+            f.close()
+
+    '''
+    Function ADD
+    '''
+    # Add quantity of items
+    def addQuantily(self):
+        self.Commodity = self.creatObject()
+        f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'r+')
+        d = f.readlines()
+        listE = []
+        f.seek(0)
+        for w in d:
+            line = w.split()
+            listE.append(line)
+        for i in range(len(d)):
+            if self.Commodity.getCID() == listE[i][0]:
+                listE[i][2] = str(listE[i][2]).replace(listE[i][2],
+                                                       str(int(listE[i][2]) + int(self.Commodity.getCQuantily())))
+            f.write(str(listE[i]).strip('[]').replace(',', '').replace('\'', '') + '\n')
+        f.truncate()
+        f.close()
+
+    # Push data into file Import_Commoodity
+    def importData(self):
+        self.Commodity = self.creatObject()
+        f = ReadnWriteF.ReadnWrite_File_Import_Commodity(self, 'a')
+        now = datetime.now()
+        f.write(str(now.strftime("%d/%m/%Y %H:%M:%S")) + '\n\n')
+        if int(self.Commodity.getCQuantily()) > 0:
+            line = self.Commodity.getCID() + ' ' + self.Commodity.getCName() + ' ' + self.Commodity.getCQuantily() + ' ' + self.Commodity.getCUnit() + ' ' + self.Commodity.getCPrice()
+            f.write(line + '\n')
+        f.write('-' * 30 + '\n')
+        f.close()
+
+    # Check the ID is the same or not?
     def checkID(self, CID):
         f = ReadnWriteF.ReadnWrite_File_Commodity(self, 'rt')
         for line in f:
@@ -242,17 +263,18 @@ class Edit_Commodity(object):
                     return False
         return True
 
-    #Function Submit
-    def submit(self):
+    #Function Add
+    def add(self):
         self.Commodity=self.creatObject()
+
         if self.Commodity.getCID().isdigit() and self.Commodity.getCQuantily().isdigit() and self.Commodity.getCPrice().isdigit():
             if len(self.Commodity.getCID()) < 3:
                 messagebox.showerror('Error', 'ID must have 3 or more numbers')
             elif self.Commodity.getCName() == '' or self.Commodity.getCUnit() == '':
                 messagebox.showerror('Error', 'Please enter the full information')
             elif self.checkID(self.Commodity.getCID()) == False:
-                notisubmit = messagebox.askyesno('oops', 'This ID is available, would you like to add product quantity?')
-                if notisubmit == 0:
+                notiadd = messagebox.askyesno('oops', 'This ID is available, would you like to add product quantity?')
+                if notiadd == 0:
                     # Delete all the entry content
                     self.ID_Entry.delete(0, 'end')
                     self.Name_Entry.delete(0, 'end')
@@ -262,9 +284,9 @@ class Edit_Commodity(object):
                     self.listbox.delete(0, 'end')
                     self.Unit_Entry.delete(0, 'end')
                 else:
-                    self.outputData()
-                    self.updateNum()
-
+                    self.importData()
+                    self.addQuantily()
+                    self.resertContent()
             else:
                 # Add to file
                 Write_File = ReadnWriteF.ReadnWrite_File_Commodity(self, 'a')
@@ -272,14 +294,10 @@ class Edit_Commodity(object):
                 Write_File.write('\n')
                 Write_File.close()
 
-                self.outputData()
+                self.importData()
+                messagebox.showinfo('Done', 'Item has been added to the store')
                 # Delete all the entry content
-                self.SearchID_Entry.delete(0, 'end')
-                self.ID_Entry.delete(0, 'end')
-                self.Name_Entry.delete(0, 'end')
-                self.Quantily_Entry.delete(0, 'end')
-                self.Price_Entry.delete(0, 'end')
-                self.Unit_Entry.delete(0, 'end')
+                self.resertContent()
         else:
             messagebox.showerror("Error", 'ID, Quantily and Price are number')
 

@@ -87,12 +87,12 @@ class View_Commodity(object):
             for i in self.listBox.get_children():
                 self.listBox.delete(i)
             for line in f:
-                file2 = []
+                list2 = []
                 line = line.split()
                 if (self.cid in line[0]):
                     found = True
-                    file2.append(line)
-                    self.show(file2)
+                    list2.append(line)
+                    self.show(list2)
             if found == False:
                 messagebox.showerror('Error', "This ID was not found")
         f.close()
@@ -102,10 +102,10 @@ class View_Commodity(object):
         for i in self.listBox.get_children():
             self.listBox.delete(i)
         for line in f:
-            file2 = []
+            list2 = []
             line = line.split()
-            file2.append(line)
-            self.show(file2)
+            list2.append(line)
+            self.show(list2)
         f.close()
         self.ID_Commodity_Entry.delete(0, 'end')
 
