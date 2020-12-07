@@ -1,6 +1,6 @@
-001 Milk 50 barrel 75000
-002 Rice 50 kg 10000
-003 Candy 20 barrel 25000
+001 Milkfghj 49 barrel 75000
+002 Rice 48 kg 10000
+003 Candy 17 barrel 25000
 004 A-Little-Lofi 5 kg 1
 005 Mr.Siro 20 kg 12500
 006 Hoan 5 barrel 10000

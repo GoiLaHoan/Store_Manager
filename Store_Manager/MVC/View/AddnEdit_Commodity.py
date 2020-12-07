@@ -14,11 +14,11 @@ class Edit_Commodity(object):
         '''
         Create Heading Add/Edit Commodity
         '''
-        self.Heading_Edit = Frame(master, bg="#ff66f5", bd=5)
+        self.Heading_Edit = Frame(master, bg="#fff5b5", bd=5)
         self.Heading_Edit.place(relx=0.2, rely=0.05, relwidth=0.6, relheight=0.18)
 
-        self.headingLb = Label(self.Heading_Edit, text="Add/Edit Commodity", bg='#fff5b5', fg='black',
-                               font=('Courier', 15))
+        self.headingLb = Label(self.Heading_Edit, text="Add/Edit Commodity", bg='#6b81ff', fg='black',
+                               font=('arial bold', 15))
         self.headingLb.place(relx=0, rely=0, relwidth=1, relheight=1)
 
         '''

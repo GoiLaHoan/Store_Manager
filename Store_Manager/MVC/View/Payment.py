@@ -16,10 +16,10 @@ class Payment(object):
         '''
         Create Heading Frame Payment
         '''
-        self.Heading_Frame = Frame(master, bg="#ff66f5", bd=5)
+        self.Heading_Frame = Frame(master, bg="#28fa87", bd=5)
         self.Heading_Frame.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.1)
 
-        self.Heading_Label = Label(self.Heading_Frame, text="Bill Commodity", bg='#fff5b5', fg='black', font=('Courier', 15))
+        self.Heading_Label = Label(self.Heading_Frame, text="Bill Commodity", bg='#6bffae', fg='black', font=('arial bold', 15))
         self.Heading_Label.place(relx=0, rely=0, relwidth=1, relheight=1)
 
         '''
@@ -67,7 +67,7 @@ class Payment(object):
             self.texttotal = IntVar()
             self.textQua = IntVar()
 
-            self.Name_Label = Label(second_frame, text=self.listName[i], font='arial 15 bold', bg='#88effc', fg='#004d99')
+            self.Name_Label = Label(second_frame, text=self.listName[i] + ' ('+self.listUnit[i]+')', font='arial 15 bold', bg='#88effc', fg='#004d99')
             self.Name_Label.grid(row=i + 1, column=0, pady=10, padx=10)
 
             self.Quantily_Entry = Entry(second_frame, textvariable=self.textQua)
@@ -87,11 +87,11 @@ class Payment(object):
         '''
         Design Bill
         '''
-        F2 = Frame(master, relief=GROOVE, bd=10)
+        F2 = Frame(master, relief=GROOVE, bd=7)
         F2.place(x=640, y=100, width=440, height=607)
 
         now = datetime.now()
-        bill_title = Label(F2, text=f'Store_Python\n\nReceipt\t\t{now.strftime("%d/%m/%Y %H:%M:%S")}', font=('Helvetic', 16, 'bold'), fg='black')
+        bill_title = Label(F2, text=f'Store Mini\n\nReceipt \t\t{now.strftime("%d/%m/%Y     %H:%M:%S")}', font=('Helvetic', 16, 'bold'), fg='black')
         bill_title.pack()
 
         scrol = Scrollbar(F2, orient=VERTICAL)
@@ -104,23 +104,23 @@ class Payment(object):
         '''
         Design Button
         '''
-        F3 = Frame(master, relief=GROOVE, bd=10)
+        F3 = Frame(master, relief=GROOVE, bd=2, bg='#88effc')
         F3.place(x=5, y=600, width=630, height=110)
 
         #Print
-        printBtn = Button(F3, text='Print Bill', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5,command=self.printbill)
+        printBtn = Button(F3, text='Print Bill', font='arial 15 bold', fg='#ff00ee', padx=5, pady=5,command=self.printbill)
         printBtn.place(relx=0.01, rely=0.15, relwidth=0.2, relheight=0.7)
 
         #Receipt
-        receiptBtn = Button(F3, text='Receipt', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=self.receipt)
+        receiptBtn = Button(F3, text='Receipt', font='arial 15 bold', fg='green', padx=5, pady=5, command=self.receipt)
         receiptBtn.place(relx=0.26, rely=0.15, relwidth=0.2, relheight=0.7)
 
         #Resert
-        resertBtn = Button(F3, text='Resert', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5,command=self.resert)
+        resertBtn = Button(F3, text='Resert', font='arial 15 bold', fg='blue', padx=5, pady=5,command=self.resert)
         resertBtn.place(relx=0.53, rely=0.15, relwidth=0.2, relheight=0.7)
 
         #Exit
-        exitBtn = Button(F3, text='Exit', font='arial 15 bold', bg='yellow', fg='crimson', padx=5, pady=5, command=master.destroy)
+        exitBtn = Button(F3, text='Exit', font='arial 15 bold', fg='red', padx=5, pady=5, command=master.destroy)
         exitBtn.place(relx=0.79, rely=0.15, relwidth=0.2, relheight=0.7)
 
     #Put the data in the array
@@ -151,14 +151,24 @@ class Payment(object):
             if self.ListQuantily_Entry[i].get() == '':
                 self.ListQuantily_Entry[i].delete(0, END)
                 self.ListQuantily_Entry[i].insert(END, 0)
-            if int(self.ListQuantily_Entry[i].get()) > int(self.listQuantily[i]):
+            if not self.ListQuantily_Entry[i].get().isnumeric():
                 flag=False
-                messagebox.showerror("Error", self.listName[i]+' in exceed the number of items, MAX: '+self.listQuantily[i])
-                self.textQuantily[i].set(self.listQuantily[i])
+                messagebox.showerror("Error", self.listName[i]+' must be numeric')
+                self.ListQuantily_Entry[i].delete(0, END)
+                self.ListQuantily_Entry[i].insert(END, 0)
             else:
-                self.ListTotal_Entry[i] = int(self.ListQuantily_Entry[i].get()) * int(self.listPrice[i])
-                self.textTotals[i].set(self.ListTotal_Entry[i])
-                self.total_cost+=self.ListTotal_Entry[i]
+                if int(self.ListQuantily_Entry[i].get()) > int(self.listQuantily[i]):
+                    flag=False
+                    messagebox.showerror("Error", self.listName[i]+' in exceed the number of items, MAX: '+self.listQuantily[i])
+                    self.textQuantily[i].set(self.listQuantily[i])
+                elif int(self.ListQuantily_Entry[i].get()) < 0:
+                    flag=False
+                    messagebox.showerror("Error", self.listName[i]+' negative numbers cannot be entered')
+                    self.textQuantily[i].set(0)
+                else:
+                    self.ListTotal_Entry[i] = int(self.ListQuantily_Entry[i].get()) * int(self.listPrice[i])
+                    self.textTotals[i].set(self.ListTotal_Entry[i])
+                    self.total_cost+=self.ListTotal_Entry[i]
 
         if flag:
             if self.total_cost != 0:

@@ -11,7 +11,7 @@ class View_Commodity(object):
         '''
         Design Heading View
         '''
-        self.Heading_View = Frame(master, bg="#fff5b5", bd=4, )
+        self.Heading_View = Frame(master, bg="#fff5b5", bd=4)
         self.Heading_View.place(relx=0.1, rely=0.05, relwidth=0.5, relheight=0.13)
 
         self.View_Label = Label(self.Heading_View, text="View Commodity", bg='#6b81ff', fg='black',

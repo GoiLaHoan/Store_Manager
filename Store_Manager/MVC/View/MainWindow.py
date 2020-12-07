@@ -15,7 +15,7 @@ class MainWindow(object):
         self.headingFrame.place(relx=0.2, rely=0.1, relwidth=0.6, relheight=0.21)
 
         self.headingLb = Label(self.headingFrame, text="My Store Mini", bg='#fff5b5', fg='black',
-                                  font=('Courier', 24))
+                                  font=('arial bold', 24))
         self.headingLb.place(relx=0, rely=0, relwidth=1, relheight=1)
 
         '''
