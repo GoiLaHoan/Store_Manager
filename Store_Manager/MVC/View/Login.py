@@ -13,7 +13,7 @@ class Login(object):
         self.user_icon = ImageTk.PhotoImage(file="images/man-user.png")
         self.pass_icon = ImageTk.PhotoImage(file="images/pw.png")
         self.avatar_icon = ImageTk.PhotoImage(file="images/avatar.png")
-
+        #
         self.bg_image = Label(self.master, image=self.bg).pack()
 
         #======variables=========
@@ -24,7 +24,8 @@ class Login(object):
         Design Login Frame
         '''
         Login_Frame=Frame(self.master, bg='#88effc')
-        Login_Frame.place(x=160,y=70)
+        Login_Frame.place(x=120,y=70)
+
 
         avatar_Lb=Label(Login_Frame, image=self.avatar_icon,bg='#88effc',bd=1)
         avatar_Lb.grid(row=0,columnspan=2,pady=20)
@@ -43,7 +44,7 @@ class Login(object):
         Design Button
         '''
         btn_exit = Button(Login_Frame, text='Exit', width=15, font=('time new roman', 10, 'bold'), fg='red',command=self.master.destroy)
-        btn_exit.grid(row=3, column=0, pady=10)
+        btn_exit.grid(row=3, column=0, padx=20, pady=10)
 
         btn_login=Button(Login_Frame,text='Login', width=15,font=('time new roman', 10,'bold'),fg='green', command=self.login)
         btn_login.grid(row=3,column=1,pady=10)
@@ -70,6 +71,10 @@ def mainlogin():
     root.iconbitmap('shop.ico')
     root.minsize(width=600, height=500)
     root.maxsize(width=600, height=500)
+    root.configure(bg='#c7f9ff')
+    # root.wm_attributes("-topmost", True)
+    # root.wm_attributes("-disabled", True)
+    # root.wm_attributes("-transparentcolor", "white")
     root.mainloop()
 
 
