@@ -1,38 +1,14 @@
-29/11/2020 01:40:11
+16/12/2020 15:03:39
 
-001 Milk 33 barrel 75000
-002 Rice 50 kg 10000
-003 Candy 20 barrel 25000
-004 A-Little-Lofi 2 kg 1
+001 Rice 3 kg 70000
+002 Candy 9 barrel 30000
+003 FishSauce 6 bottle 20000
 ------------------------------
-29/11/2020 01:41:25
+16/12/2020 15:03:54
 
-001 Milk 10 barrel 75000
-002 Rice 25 kg 10000
-003 Candy 10 barrel 25000
-004 A-Little-Lofi 3 kg 1
+001 Rice 70 kg 70000
 ------------------------------
-29/11/2020 02:54:41
+16/12/2020 15:04:25
 
-001 Milk 70 barrel 75000
-002 Rice 75 kg 10000
-003 Candy 20 barrel 25000
-004 A-Little-Lofi 5 kg 1
-005 Mr.Siro 35 kg 12500
-006 Hoan 15 barrel 10000
-007 Huy 5 kg 12000
-008 Hieu 65 barrel 81000
-009 NoThing 40 kg 65000
-010 BaBon 28 barrel 34000
-------------------------------
-07/12/2020 09:32:52
-
-001 Milk 1 barrel 75000
-002 Rice 2 kg 10000
-003 Candy 3 barrel 25000
-------------------------------
-07/12/2020 23:41:11
-
-001 Milk 5 barrel 75000
-002 Rice 20 kg 10000
+009 Condom 1 barrel 69000
 ------------------------------

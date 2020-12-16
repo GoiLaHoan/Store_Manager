@@ -79,7 +79,7 @@ class Edit_Commodity(object):
         self.Unit_Label.place(relx=0.63, rely=0.57, relheight=0.1)
 
         self.Unit_Entry = ttk.Combobox(self.labelFrame, textvariable=self.unit)
-        self.Unit_Entry['value'] = ('kg', 'barrel')
+        self.Unit_Entry['value'] = ('kg', 'barrel', 'bottle')
         self.Unit_Entry.place(relx=0.73, rely=0.57, relwidth=0.19, relheight=0.1)
 
         # Price
