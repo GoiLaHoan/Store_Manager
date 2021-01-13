@@ -1,0 +1,10 @@
+002 Candy2 76 barrel 35000
+003 FishSauce 24 bottle 20000
+004 Coca 70 barrel 65000
+005 Meat 50 kg 150000
+006 Milk 60 barrel 50000
+008 Snack 45 barrel 60000
+010 Vegetable 30 kg 5000
+007 Cake 55 barrel 120000
+009 Noodles 50 barrel 300000
+011 Heniken 30 barrel 400000

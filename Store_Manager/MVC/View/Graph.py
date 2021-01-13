@@ -43,7 +43,7 @@ class Graph_Commodity(object):
         '''
         Design Graph
         '''
-        plt.figure(figsize=(13, 8))
+        plt.figure(figsize=(10, 7))
         plt.gcf().canvas.set_window_title('Statistics On The Amount Of Import - Export')
         x = np.arange(len(self.sumDataExport))
         plt.bar(x, self.sumDataImport, width=0.3, color='green', label='Import Commodity')
