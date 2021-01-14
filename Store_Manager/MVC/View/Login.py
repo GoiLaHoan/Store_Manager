@@ -53,7 +53,7 @@ class Login(object):
     def login(self):
         if self.username.get()=='' or self.pw.get()=='':
             messagebox.showerror("Error", 'All files are required!')
-        elif self.username.get()=='admin' or self.pw.get()=='admin':
+        elif self.username.get()=='admin' and self.pw.get()=='admin':
             messagebox.showinfo('Successfull',f'welcome {self.username.get()}')
             return self.Open_FrameMenu()
         else:
